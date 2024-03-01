@@ -42,7 +42,10 @@ public abstract class TankController : MoveController, IHit
     public void Shoot()
     {
         BulletController bullet = Creater.Instance.CreateBullet(tranShoot);
-        bullet.agent = agent;
+        if (agent != null)
+        {
+            bullet.agent = agent;
+        }
         bullet.damage = damage;
     }
 

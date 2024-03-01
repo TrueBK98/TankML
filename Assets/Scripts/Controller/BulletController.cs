@@ -42,7 +42,10 @@ public class BulletController : MonoBehaviour
             if(iHit != null)
             {
                 iHit.OnHit(damage);
-                agent.AddReward(0.1f);
+                if (agent != null)
+                {
+                    agent.AddReward(0.1f);
+                }
                 EndBullet();
                 return;
             }

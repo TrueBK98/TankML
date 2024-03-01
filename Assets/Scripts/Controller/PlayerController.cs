@@ -32,18 +32,25 @@ public class PlayerController : TankController
     // Update is called once per frame
     void Update()
     {
-        Vector3 direction = new Vector3(rightJoystick.Direction.x, rightJoystick.Direction.y);
+        /*Vector3 direction = new Vector3(rightJoystick.Direction.x, rightJoystick.Direction.y);
         if (direction.x != 0 && direction.y != 0)
         {
             Move(direction);
+        }*/
+
+        float xInput = Input.GetAxis("Horizontal");
+        float yInput = Input.GetAxis("Vertical");
+
+        if (xInput != 0 || yInput != 0)
+        {
+            Move(new Vector3(xInput, yInput));
         }
 
-        /*Transform target = TargetController.GetTarget(filterTarget);
         Vector3 gunDirection;
         gunDirection = body.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         gunDirection.z = transform.position.z;
-        RotateGun(gunDirection);*/
+        RotateGun(gunDirection);
         if (Input.GetMouseButtonDown(0))
         {
             Shoot();
