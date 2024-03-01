@@ -34,13 +34,15 @@ public class TankAgent : Agent
         var actionY = Mathf.Clamp(actionBuffers.ContinuousActions[1], -1f, 1f);
         tankController.Move(new Vector3(actionX, actionY));
 
-        var PointX = actionBuffers.ContinuousActions[2];
+        /*var PointX = actionBuffers.ContinuousActions[2];
         var PointY = actionBuffers.ContinuousActions[3];
         Vector3 gunDirection;
         gunDirection = tankController.body.position - new Vector3(PointX * 100, PointY * 100);
 
         gunDirection.z = transform.position.z;
-        tankController.RotateGun(gunDirection);
+        tankController.RotateGun(gunDirection);*/
+        
+
         if (count > 20)
         {
             tankController.Shoot();

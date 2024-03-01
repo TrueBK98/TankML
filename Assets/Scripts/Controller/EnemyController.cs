@@ -90,7 +90,6 @@ public class EnemyController : TankController
     protected override void OnDie()
     {
         Creater.Instance.enemySpawned--;
-        Destroy(gameObject);
     }
 
     protected override TankInfo GetTankInfo(int level)

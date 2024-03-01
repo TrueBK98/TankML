@@ -31,6 +31,7 @@ public abstract class TankController : MoveController, IHit
     public override void Move(Vector3 direction)
     {
         body.up = direction;
+        gun.up = direction;
         base.Move(direction);
     }
 
