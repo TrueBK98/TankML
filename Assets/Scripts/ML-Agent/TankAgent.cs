@@ -11,21 +11,19 @@ using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCou
 public class TankAgent : Agent
 {
     TankController tankController;
-    float tankLastCurrentHP;
-
     int count;
 
     public override void Initialize()
     {
         tankController = GetComponent<TankController>();
-        tankLastCurrentHP = tankController.hpController.currentValue;
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(tankController.hpController.currentValue);
         sensor.AddObservation(transform.position);
-        sensor.AddObservation(tankController.gun.up);
+        sensor.AddObservation(tankController.gun.rotation);
+        sensor.AddObservation(count);
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -34,21 +32,18 @@ public class TankAgent : Agent
         var actionY = Mathf.Clamp(actionBuffers.ContinuousActions[1], -1f, 1f);
         tankController.Move(new Vector3(actionX, actionY));
 
-        /*var PointX = actionBuffers.ContinuousActions[2];
-        var PointY = actionBuffers.ContinuousActions[3];
-        Vector3 gunDirection;
-        gunDirection = tankController.body.position - new Vector3(PointX * 100, PointY * 100);
+        var actionZ = Mathf.Clamp(actionBuffers.ContinuousActions[2], -1f, 1f);
+        tankController.gun.transform.Rotate(0, 0, (actionZ * 100));
 
-        gunDirection.z = transform.position.z;
-        tankController.RotateGun(gunDirection);*/
-        
+        var shoot = actionBuffers.DiscreteActions[0];
 
-        if (count > 20)
+        if (shoot == 1 && count >= 20)
         {
             tankController.Shoot();
             count = 0;
         }
-        else
+
+        if (count < 20)
         {
             count++;
         }
@@ -70,7 +65,8 @@ public class TankAgent : Agent
         var continuousActionsOut = actionsOut.ContinuousActions;
         continuousActionsOut[0] = Input.GetAxis("Horizontal");
         continuousActionsOut[1] = Input.GetAxis("Vertical");
-        continuousActionsOut[2] = Input.GetAxis("Horizontal");
-        continuousActionsOut[3] = Input.GetAxis("Vertical");
+        continuousActionsOut[2] = Input.GetAxis("Vertical");
+        var discreteActionsOut = actionsOut.DiscreteActions;
+        discreteActionsOut[0] = Input.GetMouseButtonDown(0) ? 1 : 0;
     }
 }
